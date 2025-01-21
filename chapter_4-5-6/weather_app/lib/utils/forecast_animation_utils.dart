@@ -19,8 +19,8 @@ class AnimationUtil {
   };
 
   static ForecastAnimationState getDataForNextAnimationState({
-    ForecastDay selectedDay,
-    int currentlySelectedTimeOfDay, // [3, 6, 9, 12, 15, 18, 21, 24 ]
+    required ForecastDay selectedDay,
+    required int currentlySelectedTimeOfDay, // [3, 6, 9, 12, 15, 18, 21, 24 ]
   }) {
     final newSelection = ForecastDay.getWeatherForHour(
       selectedDay,

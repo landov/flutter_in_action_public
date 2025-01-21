@@ -21,17 +21,19 @@ class AppSettings {
 }
 
 class City {
-  String name;
-  Country country;
+  String? name;
+  Country? country;
   bool active = false;
   bool isDefault = false;
-  int listIdx;
+  int? listIdx;
 
-  City({this.name, this.country, this.active, this.listIdx}) {
-    assert(name != null);
-    if (listIdx == null) {
-      listIdx = allAddedCities.length + 1;
-    }
+  City(
+      {this.name,
+      this.country,
+      this.active = false,
+      this.listIdx}) {
+    //assert(name != null);
+    listIdx ??= allAddedCities.length + 1;
   }
 
   City.fromUserInput() {

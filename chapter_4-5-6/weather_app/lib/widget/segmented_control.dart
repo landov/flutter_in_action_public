@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
 class SegmentedControl extends StatefulWidget {
-  final Key key;
+  //final Key key;
   final List<String> segments;
   final onSelectionChanged;
   final bool editable;
   final int initialSelectionIndex;
 
-  SegmentedControl(
-    this.segments, {
-    this.key,
-    this.onSelectionChanged,
-    this.editable = true,
-    this.initialSelectionIndex = 0,
-  }) : super(key: key);
+  const SegmentedControl(
+      this.segments, {
+        super.key,
+        this.onSelectionChanged,
+        this.editable = true,
+        this.initialSelectionIndex = 0,
+      });
 
   @override
   _SegmentedControlState createState() => _SegmentedControlState();
@@ -21,7 +21,7 @@ class SegmentedControl extends StatefulWidget {
 
 class _SegmentedControlState extends State<SegmentedControl> {
   _SegmentedControlState();
-  int selectedIndex;
+  int? selectedIndex;
 
   handleSelect(int widgetNum) {
     setState(() => selectedIndex = widgetNum);
@@ -32,15 +32,15 @@ class _SegmentedControlState extends State<SegmentedControl> {
     if (widget.editable) {
       return Theme.of(context).primaryColor;
     } else {
-      return Colors.grey[500];
+      return Colors.grey.shade800;
     }
   }
 
   List<Widget> createSegments() {
-    if (widget?.segments?.isEmpty == true) {
+    if (widget.segments.isEmpty == true) {
       return [];
     }
-    var lastSegment = widget.segments?.last;
+    var lastSegment = widget.segments.last;
     if (lastSegment == null) return [];
     List<Color> childBorders = [];
 
@@ -64,10 +64,10 @@ class _SegmentedControlState extends State<SegmentedControl> {
               padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
               decoration: BoxDecoration(
                 color:
-                    selectedIndex == widget.segments.indexOf(segment) ? isEditable() : Colors.white,
+                selectedIndex == widget.segments.indexOf(segment) ? isEditable() : Colors.white,
                 border: Border(
                     right: BorderSide(color: childBorders[idx]) // hide right border on last child
-                    ),
+                ),
               ),
               child: Text(
                 segment,

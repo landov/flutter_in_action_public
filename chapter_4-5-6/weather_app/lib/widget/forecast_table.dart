@@ -9,12 +9,16 @@ import 'package:weather_app/widget/color_transition_text.dart';
 class ForecastTableView extends StatelessWidget {
   final AppSettings settings;
   final AnimationController controller;
-  final Tween<Color> textColorTween;
+  final ColorTween textColorTween;
   final Forecast forecast;
 
-  ForecastTableView({this.textColorTween, this.controller, this.forecast, this.settings});
+  ForecastTableView(
+      {required this.textColorTween,
+      required this.controller,
+      required this.forecast,
+      required this.settings});
 
-  IconData _getWeatherIcon(Weather weather) {
+  IconData? _getWeatherIcon(Weather weather) {
     return AnimationUtil.weatherIcons[weather.description];
   }
 
@@ -27,7 +31,8 @@ class ForecastTableView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var textStyle = Theme.of(context).textTheme.body1;
+    //TODO, is it OK?
+    TextStyle textStyle = Theme.of(context).textTheme.bodyLarge!;
     return Padding(
       padding: const EdgeInsets.only(
         left: 24.0,
@@ -51,7 +56,7 @@ class ForecastTableView extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: ColorTransitionText(
-                    text: DateUtils.weekdays[dailyWeather.dateTime.weekday],
+                    text: WeatherDateUtils.weekdays[dailyWeather.dateTime.weekday] ?? "",
                     style: textStyle,
                     animation: textColorTween.animate(controller),
                   ),
@@ -59,7 +64,7 @@ class ForecastTableView extends StatelessWidget {
               ),
               TableCell(
                 child: ColorTransitionIcon(
-                  icon: weatherIcon,
+                  icon: weatherIcon ?? Icons.error,
                   animation: textColorTween.animate(controller),
                   size: 16.0,
                 ),

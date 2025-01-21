@@ -4,17 +4,17 @@ class Clouds extends AnimatedWidget {
   final bool isRaining;
 
   Clouds({
-    Key key,
-    Animation<Color> animation,
+    Key? key,
+    required Animation<Color?> animation,
     this.isRaining = false,
   }) : super(key: key, listenable: animation);
 
   Widget build(BuildContext context) {
-    final Animation<Color> animation = listenable;
+    final Animation<Color?> animation = listenable as Animation<Color?>;
 
     var screenSize = MediaQuery.of(context).size;
     var _paintBrush = Paint()
-      ..color = animation.value
+      ..color = animation.value ?? Colors.transparent
       ..strokeWidth = 3.0
       ..strokeCap = StrokeCap.round;
 
@@ -35,7 +35,7 @@ class CloudPainter extends CustomPainter {
   final Paint cloudPaint;
   final bool isRaining;
 
-  CloudPainter({this.cloudPaint, this.isRaining});
+  CloudPainter({required this.cloudPaint, required this.isRaining});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -77,8 +77,10 @@ class CloudPainter extends CustomPainter {
         } else {
           rainDropOffsetYStart -= 7.0;
         }
-        canvas.drawLine(Offset(rainDropOffsetXStart, rainDropOffsetYStart),
-            Offset(rainDropOffsetXEnd, rainDropOffsetYStart + rainDropLength), cloudPaint);
+        canvas.drawLine(
+            Offset(rainDropOffsetXStart, rainDropOffsetYStart),
+            Offset(rainDropOffsetXEnd, rainDropOffsetYStart + rainDropLength),
+            cloudPaint);
       }
     }
   }

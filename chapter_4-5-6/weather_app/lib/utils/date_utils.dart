@@ -1,4 +1,4 @@
-class DateUtils {
+class WeatherDateUtils {
   static const Map<int, String> weekdays = {
     1: "Monday",
     2: "Tuesday",

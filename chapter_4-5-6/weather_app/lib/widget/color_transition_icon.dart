@@ -5,15 +5,15 @@ class ColorTransitionIcon extends AnimatedWidget {
   final double size;
 
   ColorTransitionIcon({
-    this.icon,
-    this.size,
-    Key key,
-    Animation<Color> animation,
+    required this.icon,
+    required this.size,
+    Key? key,
+    required Animation<Color?> animation,
   }) : super(key: key, listenable: animation);
 
   @override
   Widget build(BuildContext context) {
-    final Animation<Color> animation = listenable;
+    final Animation<Color?> animation = listenable as Animation<Color?>;
     return Icon(
       icon,
       color: animation.value,

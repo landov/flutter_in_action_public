@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class Sun extends AnimatedWidget {
-  Sun({Key key, Animation<Color> animation})
+  Sun({Key? key, required Animation<Color?> animation})
       : super(key: key, listenable: animation);
 
   @override
   Widget build(BuildContext context) {
-    final Animation<Color> animation = listenable;
+    final Animation<Color?> animation = listenable as Animation<Color?>;
     var maxWidth = MediaQuery.of(context).size.width;
     var margin = (maxWidth * .3) / 2;
 

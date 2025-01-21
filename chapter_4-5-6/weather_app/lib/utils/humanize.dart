@@ -22,9 +22,9 @@ class Humanize {
   }
 
   static String weatherDescription(Weather weather) {
-    var day = DateUtils.weekdays[weather.dateTime.weekday];
+    var day = WeatherDateUtils.weekdays[weather.dateTime.weekday];
     var description = Weather.displayValues[weather.description];
-    return "$day. ${description.replaceFirst(description[0], description[0].toUpperCase())}.";
+    return "$day. ${description?.replaceFirst(description[0], description[0].toUpperCase())}.";
   }
 
   static List<String> allHours() {

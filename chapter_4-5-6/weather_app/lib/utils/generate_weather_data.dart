@@ -10,8 +10,8 @@ import 'package:weather_app/models/src/weather.dart';
 /// creating complex fake data.
 class WeatherDataRepository {
   DateTime _today = DateTime.now().toUtc();
-  DateTime startDateTime;
-  DateTime dailyDate;
+  late DateTime startDateTime;
+  late DateTime dailyDate;
   var _random = math.Random();
   List<City> cities = settings.allAddedCities;
 
@@ -28,8 +28,7 @@ class WeatherDataRepository {
         return 45;
       case WeatherDescription.clear:
       case WeatherDescription.sunny:
-      default:
-        return 5;
+      return 5;
     }
   }
 

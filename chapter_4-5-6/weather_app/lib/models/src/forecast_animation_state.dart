@@ -16,12 +16,12 @@ class ForecastAnimationState {
       Offset(cloudHorizontalOffsetPosition, verticalOffsetPosition + 0.5);
 
   ForecastAnimationState({
-    this.backgroundColor,
-    this.sunColor,
-    this.textColor,
-    this.cloudColor,
-    this.verticalOffsetPosition,
-    this.cloudHorizontalOffsetPosition,
+    required this.backgroundColor,
+    required this.sunColor,
+    required this.textColor,
+    required this.cloudColor,
+    required this.verticalOffsetPosition,
+    required this.cloudHorizontalOffsetPosition,
   });
 
   factory ForecastAnimationState.stateForNextSelection(int hour, WeatherDescription condition) {
@@ -29,9 +29,9 @@ class ForecastAnimationState {
     assert(roundedInt % 3 == 0);
 
     double cloudOffsetPosition =
-        (condition == WeatherDescription.cloudy || condition == WeatherDescription.rain)
-            ? 0.0
-            : 1.2;
+    (condition == WeatherDescription.cloudy || condition == WeatherDescription.rain)
+        ? 0.0
+        : 1.2;
 
     switch (roundedInt) {
       case 0:

@@ -9,7 +9,7 @@ import 'package:weather_app/widget/segmented_control.dart';
 class SettingsPage extends StatefulWidget {
   final AppSettings settings;
 
-  const SettingsPage({Key key, this.settings}) : super(key: key);
+  const SettingsPage({Key? key, required this.settings}) : super(key: key);
 
   @override
   SettingsPageState createState() {
@@ -72,7 +72,7 @@ class SettingsPageState extends State<SettingsPage> {
                   MaterialPageRoute(
                     fullscreenDialog: true,
                     builder: (BuildContext context) {
-                      return AddNewCityPage();
+                      return AddNewCityPage(settings: widget.settings,);
                     },
                   ),
                 );
@@ -87,6 +87,7 @@ class SettingsPageState extends State<SettingsPage> {
                   final city = allAddedCities[index];
                   return Dismissible(
                     onDismissed: (DismissDirection dir) => _handleDismiss(dir, city),
+                    confirmDismiss: (DismissDirection dir) async => dir == DismissDirection.endToStart,
                     background: Container(
                       child: Icon(Icons.delete_forever),
                       decoration: BoxDecoration(color: Colors.red[700]),
@@ -94,8 +95,8 @@ class SettingsPageState extends State<SettingsPage> {
                     key: ValueKey(city),
                     child: CheckboxListTile(
                       value: city.active,
-                      title: Text(city.name),
-                      onChanged: (bool b) => _handleCityActiveChange(b, city),
+                      title: Text(city.name ?? "Unknown"),
+                      onChanged: (bool? b) => _handleCityActiveChange(b ?? false, city),
                     ),
                   );
                 },

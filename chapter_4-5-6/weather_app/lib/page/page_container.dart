@@ -8,7 +8,7 @@ import 'package:weather_app/utils/forecast_animation_utils.dart';
 class PageContainer extends StatefulWidget {
   final AppSettings settings;
 
-  const PageContainer({Key key, this.settings}) : super(key: key);
+  const PageContainer({super.key, required this.settings});
 
   @override
   _PageContainerState createState() => _PageContainerState(settings);
@@ -49,16 +49,16 @@ class _PageContainerState extends State<PageContainer> {
           return allAddedCities
               .where((city) => city.active)
               .map((City city) => PopupMenuItem(
-                    value: city.name,
-                    child: Text(city.name),
-                  ))
+            value: city.name,
+            child: Text(city.name ?? ""),
+          ))
               .toList();
         },
       ),
-      settingsButton: FlatButton(
+      settingsButton: TextButton(
           child: Text(
-            AnimationUtil.temperatureLabels[settings.selectedTemperature],
-            style: Theme.of(context).textTheme.headline,
+            AnimationUtil.temperatureLabels[settings.selectedTemperature] ?? "C",
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
           onPressed: _showSettingsPage),
       settings: settings,

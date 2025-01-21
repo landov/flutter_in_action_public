@@ -1,6 +1,5 @@
 // original : https://raw.githubusercontent.com/biessek/flutter_country_picker/master/lib/country.dart
 
-import 'package:flutter/foundation.dart';
 
 class Country {
   final String dialingCode;
@@ -8,17 +7,17 @@ class Country {
   final String name;
 
   const Country({
-    @required this.dialingCode,
-    @required this.isoCode,
+    required this.dialingCode,
+    required this.isoCode,
     this.name = "",
   });
 
   @override
   bool operator ==(o) =>
       o is Country &&
-      o.dialingCode == this.dialingCode &&
-      o.isoCode == this.isoCode &&
-      o.name == this.name;
+          o.dialingCode == this.dialingCode &&
+          o.isoCode == this.isoCode &&
+          o.name == this.name;
 
   int get hashCode {
     int hash = 7;
@@ -1531,15 +1530,15 @@ class Country {
   /// none or more than 1 are found
   static findByIsoCode(String isoCode) {
     return ALL.singleWhere(
-      (item) => item.isoCode == isoCode,
+          (item) => item.isoCode == isoCode,
     );
   }
 
   /// Creates a copy with modified values
   Country copyWith({
-    String name,
-    String isoCode,
-    String dialingCode,
+    required String name,
+    required String isoCode,
+    required String dialingCode,
   }) {
     return Country(
       name: name ?? this.name,

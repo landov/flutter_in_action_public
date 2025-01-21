@@ -5,9 +5,8 @@ import 'package:weather_app/page/page_container.dart';
 import 'package:weather_app/styles.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   AppSettings settings = AppSettings();
-
-  // Don't allow landscape mode
   SystemChrome.setPreferredOrientations(
           [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
       .then((_) => runApp(MyApp(settings: settings)));
@@ -16,14 +15,15 @@ void main() {
 class MyApp extends StatelessWidget {
   final AppSettings settings;
 
-  const MyApp({Key key, this.settings}) : super(key: key);
+  const MyApp({super.key, required this.settings});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     final theme = ThemeData(
+      useMaterial3: false,
       fontFamily: "Cabin",
       primaryColor: AppColor.midnightSky,
-      accentColor: AppColor.midnightCloud,
       primaryTextTheme: Theme.of(context).textTheme.apply(
             bodyColor: AppColor.textColorDark,
             displayColor: AppColor.textColorDark,
@@ -35,9 +35,12 @@ class MyApp extends StatelessWidget {
     );
 
     return MaterialApp(
-      title: 'Weather App',
+      title: 'Wather App',
       debugShowCheckedModeBanner: false,
-      theme: theme,
+      theme: theme.copyWith(
+        colorScheme:
+            theme.colorScheme.copyWith(secondary: AppColor.midnightCloud),
+      ),
       home: PageContainer(settings: settings),
     );
   }

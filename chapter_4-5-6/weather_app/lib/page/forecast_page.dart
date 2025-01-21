@@ -21,35 +21,42 @@ class ForecastPage extends StatefulWidget {
   final AppSettings settings;
 
   const ForecastPage({
-    Key key,
-    this.menu,
-    this.settingsButton,
-    @required this.settings,
-  }) : super(key: key);
+    super.key,
+    required this.menu,
+    required this.settingsButton,
+    required this.settings,
+  });
 
   @override
   _ForecastPageState createState() => _ForecastPageState();
 }
 
-class _ForecastPageState extends State<ForecastPage> with TickerProviderStateMixin {
+class _ForecastPageState extends State<ForecastPage>
+    with TickerProviderStateMixin {
   int activeTabIndex = 0;
-  ForecastController _forecastController;
-  AnimationController _animationController;
-  AnimationController _weatherConditionAnimationController;
-  ColorTween _colorTween;
-  ColorTween _backgroundColorTween;
-  ColorTween _textColorTween;
-  ColorTween _cloudColorTween;
-  Tween<Offset> _positionOffsetTween;
-  TweenSequence<Offset> _cloudPositionOffsetTween;
-  ForecastAnimationState currentAnimationState;
-  ForecastAnimationState nextAnimationState;
-  Offset verticalDragStart;
+  late ForecastController _forecastController;
+  late AnimationController _animationController;
+  late AnimationController _weatherConditionAnimationController;
+  late ColorTween _colorTween;
+  late ColorTween _backgroundColorTween;
+  late ColorTween _textColorTween;
+  late ColorTween _cloudColorTween;
+  late Tween<Offset> _positionOffsetTween;
+  late TweenSequence<Offset> _cloudPositionOffsetTween;
+  late ForecastAnimationState currentAnimationState;
+  late ForecastAnimationState nextAnimationState;
+  late Offset verticalDragStart;
 
   @override
   void initState() {
     super.initState();
     _forecastController = ForecastController(widget.settings.activeCity);
+
+    //Due to introduction of null safety
+    _animationController = _initAnimationController();
+    _weatherConditionAnimationController =
+        _initWeatherConditionAnimationController();
+
     _render();
   }
 
@@ -61,8 +68,8 @@ class _ForecastPageState extends State<ForecastPage> with TickerProviderStateMix
 
   @override
   void dispose() {
-    _animationController?.dispose();
-    _weatherConditionAnimationController?.dispose();
+    _animationController.dispose();
+    _weatherConditionAnimationController.dispose();
     super.dispose();
   }
 
@@ -86,7 +93,8 @@ class _ForecastPageState extends State<ForecastPage> with TickerProviderStateMix
     /// starting values for the _next_ animation cycle.)
     nextAnimationState = AnimationUtil.getDataForNextAnimationState(
       selectedDay: _forecastController.selectedDay,
-      currentlySelectedTimeOfDay: _forecastController.selectedHourlyTemperature.dateTime.hour,
+      currentlySelectedTimeOfDay:
+          _forecastController.selectedHourlyTemperature.dateTime.hour,
     );
 
     /// These methods build all the relevant objects
@@ -110,7 +118,8 @@ class _ForecastPageState extends State<ForecastPage> with TickerProviderStateMix
     /// with the data from the _new_ values.
     /// This way, the data for the _next_ animation cycle
     /// is already loaded in.
-    _forecastController.selectedHourlyTemperature = ForecastDay.getWeatherForHour(
+    _forecastController.selectedHourlyTemperature =
+        ForecastDay.getWeatherForHour(
       _forecastController.selectedDay,
       nextSelectedHour,
     );
@@ -131,17 +140,23 @@ class _ForecastPageState extends State<ForecastPage> with TickerProviderStateMix
     _weatherConditionAnimationController.forward();
   }
 
+  AnimationController _initAnimationController() => AnimationController(
+        duration: Duration(milliseconds: 500),
+        vsync: this,
+      );
+
+  AnimationController _initWeatherConditionAnimationController() =>
+      AnimationController(
+        duration: Duration(milliseconds: 1000),
+        vsync: this,
+      );
+
   void _buildAnimationController() {
-    _animationController?.dispose();
-    _animationController = AnimationController(
-      duration: Duration(milliseconds: 500),
-      vsync: this,
-    );
-    _weatherConditionAnimationController?.dispose();
-    _weatherConditionAnimationController = AnimationController(
-      duration: Duration(milliseconds: 1000),
-      vsync: this,
-    );
+    _animationController.dispose();
+    _animationController = _initAnimationController();
+    _weatherConditionAnimationController.dispose();
+    _weatherConditionAnimationController =
+        _initWeatherConditionAnimationController();
   }
 
   void _buildTweens() {
@@ -196,10 +211,11 @@ class _ForecastPageState extends State<ForecastPage> with TickerProviderStateMix
       widget.settings.selectedTemperature,
       _forecastController.selectedHourlyTemperature,
     );
-    final _weatherDescription =
-        Humanize.weatherDescription(_forecastController.selectedHourlyTemperature);
+    final _weatherDescription = Humanize.weatherDescription(
+        _forecastController.selectedHourlyTemperature);
     final isRaining =
-        _forecastController.selectedHourlyTemperature.description == WeatherDescription.rain;
+        _forecastController.selectedHourlyTemperature.description ==
+            WeatherDescription.rain;
 
     final forecastContent = ForecastTableView(
       settings: widget.settings,
@@ -214,12 +230,12 @@ class _ForecastPageState extends State<ForecastPage> with TickerProviderStateMix
         children: <Widget>[
           ColorTransitionText(
             text: _weatherDescription,
-            style: Theme.of(context).textTheme.headline,
+            style: Theme.of(context).textTheme.headlineMedium!,
             animation: _textColorTween.animate(_animationController),
           ),
           ColorTransitionText(
             text: _currentTemp,
-            style: Theme.of(context).textTheme.display3,
+            style: Theme.of(context).textTheme.displayLarge!,
             animation: _textColorTween.animate(_animationController),
           ),
         ],
@@ -229,7 +245,8 @@ class _ForecastPageState extends State<ForecastPage> with TickerProviderStateMix
     final timePickerRow = TimePickerRow(
       tabItems: Humanize.allHours(),
       forecastController: _forecastController,
-      onTabChange: (int selectedTabIndex) => _handleStateChange(selectedTabIndex),
+      onTabChange: (int selectedTabIndex) =>
+          _handleStateChange(selectedTabIndex),
       startIndex: activeTabIndex,
     );
 
@@ -239,8 +256,8 @@ class _ForecastPageState extends State<ForecastPage> with TickerProviderStateMix
         child: TransitionAppbar(
           animation: _backgroundColorTween.animate(_animationController),
           title: ColorTransitionText(
-            text: _forecastController.selectedHourlyTemperature.city.name,
-            style: Theme.of(context).textTheme.headline,
+            text: _forecastController.selectedHourlyTemperature.city.name ?? "",
+            style: Theme.of(context).textTheme.headlineSmall!,
             animation: _textColorTween.animate(_animationController),
           ),
           actionIcon: widget.settingsButton,
@@ -251,7 +268,8 @@ class _ForecastPageState extends State<ForecastPage> with TickerProviderStateMix
         onDoubleTap: () {
           setState(() {
             widget.settings.selectedTemperature == TemperatureUnit.celsius
-                ? widget.settings.selectedTemperature = TemperatureUnit.fahrenheit
+                ? widget.settings.selectedTemperature =
+                    TemperatureUnit.fahrenheit
                 : widget.settings.selectedTemperature = TemperatureUnit.celsius;
           });
         },
