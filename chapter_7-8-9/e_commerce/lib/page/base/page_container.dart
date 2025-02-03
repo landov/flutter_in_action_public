@@ -19,7 +19,7 @@ import 'package:flutter/material.dart';
 class PageContainer extends PageContainerBase {
   final PageType pageType;
 
-  PageContainer({Key key, @required this.pageType}) : super(key: key);
+  PageContainer({Key? key, required this.pageType}) : super(key: key);
 
   @override
   Widget get menuDrawer => AppMenu();
@@ -70,7 +70,7 @@ class PageContainer extends PageContainerBase {
 class ProductDetailPageContainer extends PageContainerBase {
   final Product product;
 
-  ProductDetailPageContainer({@required this.product});
+  ProductDetailPageContainer({required this.product});
 
   @override
   Widget get body => ProductDetailPage(product: product);
@@ -79,7 +79,7 @@ class ProductDetailPageContainer extends PageContainerBase {
   String get pageTitle => "";
 
   @override
-  Widget get menuDrawer => null;
+  Widget? get menuDrawer => null;
 
   @override
   Widget get background => BackgroundImage(
@@ -87,7 +87,7 @@ class ProductDetailPageContainer extends PageContainerBase {
         imageTitle: _getImageForCategory,
       );
 
-  ImageTitle get _getImageForCategory => categoriesToImageMap[product.category];
+  ImageTitle? get _getImageForCategory => categoriesToImageMap[product.category];
 
   @override
   Color get backgroundColor => Colors.transparent;
@@ -101,7 +101,7 @@ class AddNewProductPageContainer extends PageContainerBase {
   String get pageTitle => "Add Product";
 
   @override
-  Widget get menuDrawer => null;
+  Widget? get menuDrawer => null;
 
   @override
   Widget get background => Container();

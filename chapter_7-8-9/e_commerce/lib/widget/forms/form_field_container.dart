@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 class FormFieldContainer extends StatelessWidget {
   final Widget child;
 
-  FormFieldContainer({this.child});
+  FormFieldContainer({required this.child});
 
   @override
   Widget build(BuildContext context) {

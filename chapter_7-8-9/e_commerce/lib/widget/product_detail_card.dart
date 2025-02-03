@@ -12,7 +12,12 @@ class ProductDetailCard extends StatelessWidget {
   final GestureTapCallback onTap;
   final GestureLongPressCallback onLongPress;
 
-  const ProductDetailCard({Key key, this.product, this.onTap, this.onLongPress}) : super(key: key);
+  const ProductDetailCard(
+      {Key? key,
+      required this.product,
+      required this.onTap,
+      required this.onLongPress})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +56,8 @@ class ProductDetailCard extends StatelessWidget {
                   Spacing.matGridUnit(scale: .5),
                 ),
                 child: Center(
-                  child: Text(product.title, style: Theme.of(context).primaryTextTheme.subhead),
+                  child: Text(product.title,
+                      style: Theme.of(context).primaryTextTheme.titleMedium),
                 ),
               ),
             ),

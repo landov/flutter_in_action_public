@@ -2,7 +2,7 @@ import 'package:e_commerce/utils/product_seeds.dart';
 import 'package:e_commerce/utils/uuid.dart';
 
 class Product {
-  String id;
+  String? id;
   ImageTitle imageTitle;
   String title;
   ProductCategory category;
@@ -10,13 +10,13 @@ class Product {
 
   Product({
     this.id,
-    this.imageTitle,
-    this.title,
-    this.category,
-    this.cost,
+    required this.imageTitle,
+    required this.title,
+    required this.category,
+    required this.cost,
   });
 
-  String get imageUrl => productImageFile[imageTitle];
+  String get imageUrl => productImageFile[imageTitle]!;
 
   String get uniqueId => Uuid().generateV4();
 }
@@ -64,10 +64,10 @@ enum ImageTitle {
 
 // Convenience class that bridges user input with adding products to the database.
 class NewProduct {
-  double cost;
-  String title;
-  ProductCategory category;
-  DateTime dateAdded;
+  double? cost;
+  String? title;
+  ProductCategory? category;
+  DateTime? dateAdded;
 
   @override
   String toString() {

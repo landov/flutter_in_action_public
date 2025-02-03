@@ -5,6 +5,7 @@
 
 import 'package:e_commerce/widget/appbar_cart_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 enum PageType { Catalog, Cart, Settings, ProductDetail, AddProductForm }
 
@@ -13,13 +14,13 @@ abstract class PageContainerBase extends StatelessWidget {
 
   String get pageTitle;
 
-  Widget get menuDrawer;
+  Widget? get menuDrawer;
 
   Widget get background;
 
   Color get backgroundColor;
 
-  const PageContainerBase({Key key}) : super(key: key);
+  const PageContainerBase({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,20 +29,18 @@ abstract class PageContainerBase extends StatelessWidget {
         Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          color: Theme.of(context).backgroundColor,
+          color: Theme.of(context).colorScheme.background,
         ),
         background,
         Scaffold(
           backgroundColor: backgroundColor,
           appBar: AppBar(
-            brightness: Brightness.light,
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             title: Text(pageTitle),
-            textTheme: Theme.of(context).primaryTextTheme,
             actions: <Widget>[
               AppBarCartIcon(),
-            ],
+            ], systemOverlayStyle: SystemUiOverlayStyle.light,
           ),
           drawer: menuDrawer,
           body: body,

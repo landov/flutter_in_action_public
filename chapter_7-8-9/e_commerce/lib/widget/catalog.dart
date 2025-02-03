@@ -25,7 +25,7 @@ class Catalog extends StatefulWidget {
 }
 
 class CatalogState extends State<Catalog> {
-  CatalogBloc _bloc;
+  late CatalogBloc _bloc;
   List<Widget> slivers = [];
   bool loading = true;
 
@@ -49,15 +49,15 @@ class CatalogState extends State<Catalog> {
   void _showQuickAddToCart(BuildContext context, Product product) async {
     var _cartBloc = AppStateContainer.of(context).blocProvider.cartBloc;
 
-    int qty = await showModalBottomSheet<int>(
+    int? qty = await showModalBottomSheet<int>(
         context: context,
         builder: (BuildContext context) {
           return AddToCartBottomSheet(
-            key: Key(product.id),
+            key: Key(product.id!),
           );
         });
 
-    _addToCart(product, qty, _cartBloc);
+    _addToCart(product, qty ?? 0, _cartBloc);
   }
 
   void _addToCart(Product product, int quantity, CartBloc _bloc) {
@@ -75,7 +75,7 @@ class CatalogState extends State<Catalog> {
             return CustomSliverHeader(
               onTap: (String text) => print(text),
               headerText:
-                  Humanize.productCategoryFromEnum(snapshot?.data?.first?.category) ?? "header",
+              (snapshot.data?.first != null) ? Humanize.productCategoryFromEnum(snapshot.data!.first.category) : "header",
             );
           }));
       slivers.add(StreamBuilder(
@@ -89,7 +89,7 @@ class CatalogState extends State<Catalog> {
               ),
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
-                  var _product = snapshot.data[index];
+                  var _product = snapshot.data![index];
                   return ProductDetailCard(
                     key: ValueKey(_product.imageTitle.toString()),
                     onTap: () => _toProductDetailPage(_product),

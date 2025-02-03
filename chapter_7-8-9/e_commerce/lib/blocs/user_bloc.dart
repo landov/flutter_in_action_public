@@ -20,9 +20,9 @@ class UserBloc {
       StreamController<NewUserProductEvent>();
 
   // Outputs
-  Stream<ECommerceUser> get user => _userStreamController.stream;
-  StreamController _userStreamController = BehaviorSubject<ECommerceUser>(
-      seedValue: ECommerceUser(name: "Eric Windmill", contact: "eric@ericwindmill.com"));
+  Stream<ECommerceUser> get user => _userStreamController.stream as Stream<ECommerceUser>;
+  final StreamController _userStreamController = BehaviorSubject<ECommerceUser>.seeded(
+      ECommerceUser(name: "Eric Windmill", contact: "eric@ericwindmill.com"));
 
   UserBloc(this._service) {
     updateUserInformationSink.stream.listen(_handleNewUserInformation);
@@ -39,9 +39,9 @@ class UserBloc {
 
   _handleNewUserProduct(NewUserProductEvent event) {
     var product = Product(
-      category: event.product.category,
-      title: event.product.title,
-      cost: event.product.cost,
+      category: event.product.category!,
+      title: event.product.title!,
+      cost: event.product.cost!,
       imageTitle: ImageTitle.SlicedOranges,
     );
     _service.addUserProduct(product);

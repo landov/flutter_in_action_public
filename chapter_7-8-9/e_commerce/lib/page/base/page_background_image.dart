@@ -7,14 +7,14 @@ import 'package:e_commerce/models/product.dart';
 import 'package:flutter/material.dart';
 
 class BackgroundImage extends StatelessWidget {
-  final ImageTitle imageTitle;
+  final ImageTitle? imageTitle;
 
-  const BackgroundImage({Key key, this.imageTitle}) : super(key: key);
+  const BackgroundImage({Key? key, this.imageTitle}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).backgroundColor,
+      color: Theme.of(context).colorScheme.background,
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * .7,
       child: ClipPath(

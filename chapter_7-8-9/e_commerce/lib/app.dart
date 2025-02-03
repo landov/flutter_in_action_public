@@ -25,7 +25,6 @@ class _ECommerceAppState extends State<ECommerceApp> {
     /// All constants can be found in [utils/styles.dart]
     var _theme = ThemeData(
       // content
-      backgroundColor: AppColors.background,
       textTheme: Theme.of(context).textTheme.apply(
             bodyColor: AppColors.textColor,
             displayColor: AppColors.textColor,
@@ -35,17 +34,14 @@ class _ECommerceAppState extends State<ECommerceApp> {
             bodyColor: AppColors.displayTextColor,
             displayColor: AppColors.displayTextColor,
           ),
-      // ui -- contrasts 'accent color'
-      accentTextTheme: Theme.of(context).textTheme.apply(
-            bodyColor: AppColors.accentTextColor,
-            displayColor: AppColors.accentTextColor,
-          ),
       primaryColor: AppColors.primary,
-      accentColor: AppColors.accent,
       primaryIconTheme: Theme.of(context)
           .iconTheme
           .copyWith(color: AppColors.displayTextColor),
-      buttonColor: Colors.black54,
+      colorScheme: Theme.of(context).colorScheme.copyWith(
+            surface: AppColors.background,
+            secondary: AppColors.accent,
+          ),
     );
 
     return MaterialApp(

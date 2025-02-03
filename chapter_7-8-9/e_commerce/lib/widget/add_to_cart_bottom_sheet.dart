@@ -8,7 +8,7 @@ import 'package:e_commerce/utils/styles.dart';
 import 'package:flutter/material.dart';
 
 class AddToCartBottomSheet extends StatefulWidget {
-  const AddToCartBottomSheet({Key key}) : super(key: key);
+  const AddToCartBottomSheet({Key? key}) : super(key: key);
 
   @override
   _AddToCartBottomSheetState createState() => _AddToCartBottomSheetState();
@@ -16,7 +16,7 @@ class AddToCartBottomSheet extends StatefulWidget {
 
 class _AddToCartBottomSheetState extends State<AddToCartBottomSheet> {
   int _quantity = 0;
-  AppState state;
+  AppState? state;
 
   @override
   void didChangeDependencies() {
@@ -39,11 +39,12 @@ class _AddToCartBottomSheetState extends State<AddToCartBottomSheet> {
             padding: EdgeInsets.all(Spacing.matGridUnit()),
             child: Text(
               "Add item to Cart",
-              style: Theme.of(context).primaryTextTheme.display1,
+              style: Theme.of(context).primaryTextTheme.headlineMedium,
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: Spacing.matGridUnit(scale: 3)),
+            padding:
+                EdgeInsets.symmetric(vertical: Spacing.matGridUnit(scale: 3)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -57,7 +58,7 @@ class _AddToCartBottomSheetState extends State<AddToCartBottomSheet> {
                     }),
                 Text(
                   _quantity.toString(),
-                  style: Theme.of(context).primaryTextTheme.headline,
+                  style: Theme.of(context).primaryTextTheme.headlineMedium,
                 ),
                 IconButton(
                   iconSize: 40.0,
@@ -69,9 +70,12 @@ class _AddToCartBottomSheetState extends State<AddToCartBottomSheet> {
               ],
             ),
           ),
-          RaisedButton(
-            color: AppColors.primary[500],
-            textColor: Colors.white,
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: AppColors.primary.shade500,
+
+            ),
             child: Text(
               "Add To Cart".toUpperCase(),
             ),

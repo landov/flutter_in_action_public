@@ -24,7 +24,7 @@ double determineCost() {
 Product createProduct(String productName) {
   return Product(
       title: productName,
-      imageTitle: availableProductsToImage[productName],
+      imageTitle: availableProductsToImage[productName]!,
       category: getCategoryForProduct(productName),
       cost: determineCost());
 }

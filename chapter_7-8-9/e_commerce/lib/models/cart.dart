@@ -1,5 +1,5 @@
 class Cart {
-  Map<String, int> items;
-  double totalCost;
-  int totalCartItems;
+  Map<String, int>? items;
+  double? totalCost;
+  int? totalCartItems;
 }

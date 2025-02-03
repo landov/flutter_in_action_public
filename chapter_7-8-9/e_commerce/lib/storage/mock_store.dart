@@ -14,9 +14,9 @@ import 'package:e_commerce/utils/generate_cart_data.dart';
 /// updates a datasource that *isn't* persistent,
 /// then notifies listeners.
 class AppStore {
-  Cart _cart;
-  Catalog _catalog;
-  ECommerceUser _user;
+  late Cart _cart;
+  late Catalog _catalog;
+  late ECommerceUser _user;
 
   StreamController<Cart> cartNotifier = StreamController<Cart>.broadcast();
   StreamController<Catalog> catalogNotifier = StreamController<Catalog>.broadcast();

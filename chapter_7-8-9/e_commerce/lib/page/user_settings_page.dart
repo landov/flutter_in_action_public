@@ -35,7 +35,7 @@ class UserSettingsPage extends StatelessWidget {
               builder: (BuildContext context, AsyncSnapshot<ECommerceUser> snapshot) {
                 return SliverList(
                   delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-                    var _product = snapshot.data.userProducts[index];
+                    var _product = snapshot.data!.userProducts[index];
                     return Container(
                         decoration: BoxDecoration(
                           border: Border(
@@ -52,21 +52,21 @@ class UserSettingsPage extends StatelessWidget {
                             ),
                           ),
                           onDismissed: (DismissDirection dir) {
-                            Scaffold.of(context).showSnackBar(
+                            ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 backgroundColor: AppColors.primary,
                                 content: Text(
                                   "${_product.title} deleted.",
                                   style: Theme.of(context)
                                       .textTheme
-                                      .headline
+                                      .headlineMedium!
                                       .copyWith(color: AppColors.accentTextColor),
                                 ),
                               ),
                             );
                           },
                         ));
-                  }, childCount: snapshot.data.userProducts.length),
+                  }, childCount: snapshot.data!.userProducts.length),
                 );
               },
             )

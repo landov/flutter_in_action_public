@@ -15,9 +15,9 @@ class CatalogBloc {
   final CatalogService _service;
 
   // Output products
-  StreamController _productStreamController =
-      BehaviorSubject<List<Product>>(seedValue: populateCatalog().availableProducts);
-  Stream<List<Product>> get allProducts => _productStreamController.stream;
+  final StreamController _productStreamController =
+      BehaviorSubject<List<Product>>.seeded(populateCatalog().availableProducts);
+  Stream<List<Product>> get allProducts => _productStreamController.stream as Stream<List<Product>>;
 
   List<StreamController<List<Product>>> _controllersByCategory = [];
   List<Stream<List<Product>>> productStreamsByCategory = [];
@@ -58,9 +58,9 @@ class CatalogBloc {
   _handleProductUpdate(ProductEvent event) {
     _service.addNewProduct(
       Product(
-        title: event.product.title,
-        category: event.product.category,
-        cost: event.product.cost,
+        title: event.product.title!,
+        category: event.product.category!,
+        cost: event.product.cost!,
         imageTitle: ImageTitle.SlicedOranges, // This is faked.
       ),
     );
@@ -69,9 +69,9 @@ class CatalogBloc {
   _handleAddProduct(ProductEvent event) {
     _service.addNewProduct(
       Product(
-        category: event.product.category,
-        title: event.product.title,
-        cost: event.product.cost,
+        category: event.product.category!,
+        title: event.product.title!,
+        cost: event.product.cost!,
         imageTitle: ImageTitle.SlicedOranges,
       ),
     );

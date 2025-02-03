@@ -22,8 +22,9 @@ class AddProductForm extends StatefulWidget {
 }
 
 class _AddProductFormState extends State<AddProductForm> {
-  UserBloc _userBloc;
-  CatalogBloc _bloc;
+  UserBloc? _userBloc;
+  CatalogBloc? _bloc;
+
   @override
   void didChangeDependencies() {
     _bloc = AppStateContainer.of(context).blocProvider.catalogBloc;
@@ -32,7 +33,7 @@ class _AddProductFormState extends State<AddProductForm> {
   }
 
   NewProduct _newProduct = NewProduct();
-  File _selected;
+  XFile? _selected;
 
   ///
   /// End Widget Set Up Region
@@ -69,9 +70,13 @@ class _AddProductFormState extends State<AddProductForm> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: FlatButton(
-                      textColor: Colors.red[400],
-                      child: Text("Cancel"),
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.red.shade400,
+                      ),
+                      child: Text(
+                        "Cancel",
+                      ),
                       onPressed: () {
                         Navigator.pop(context);
                       },
@@ -79,8 +84,9 @@ class _AddProductFormState extends State<AddProductForm> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: RaisedButton(
-                      color: Colors.blue[400],
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue.shade400),
                       child: Text("Submit"),
                       onPressed: _submitForm,
                     ),
@@ -109,13 +115,13 @@ class _AddProductFormState extends State<AddProductForm> {
             labelText: "Title",
           ),
           autofocus: true,
-          validator: (String val) {
-            if (val.isEmpty) {
+          validator: (String? val) {
+            if (val == null || val.isEmpty) {
               return "Field cannot be left blank";
             }
             return null;
           },
-          onSaved: (String val) => _newProduct.title = val,
+          onSaved: (String? val) => _newProduct.title = val ?? '',
         ),
       ),
     );
@@ -130,9 +136,9 @@ class _AddProductFormState extends State<AddProductForm> {
           helperText: "Required",
         ),
         keyboardType: TextInputType.numberWithOptions(),
-        autovalidate: true,
-        validator: (String val) {
-          if (val.isEmpty) {
+        autovalidateMode: AutovalidateMode.always,
+        validator: (String? val) {
+          if (val == null || val.isEmpty) {
             return "Field cannot be left blank";
           }
           if (double.tryParse(val) == null) {
@@ -140,7 +146,7 @@ class _AddProductFormState extends State<AddProductForm> {
           }
           return null;
         },
-        onSaved: (String val) => _newProduct.cost = double.tryParse(val),
+        onSaved: (String? val) => _newProduct.cost = double.tryParse(val ?? ''),
       ),
     );
   }
@@ -153,11 +159,12 @@ class _AddProductFormState extends State<AddProductForm> {
           labelText: "Category",
         ),
         value: _newProduct.category,
-        onChanged: (ProductCategory newSelection) {
+        onChanged: (ProductCategory? newSelection) {
           setState(() => _newProduct.category = newSelection);
         },
         items: ProductCategory.values.map((ProductCategory category) {
-          return DropdownMenuItem(value: category, child: Text(category.toString()));
+          return DropdownMenuItem(
+              value: category, child: Text(category.toString()));
         }).toList(),
       ),
     );
@@ -169,7 +176,9 @@ class _AddProductFormState extends State<AddProductForm> {
         builder: (FormFieldState state) {
           return DateInputField(
             labelText: "Date Added",
-            valueText: _newProduct.dateAdded != null ? formatDate(_newProduct.dateAdded) : null,
+            valueText: _newProduct.dateAdded != null
+                ? formatDate(_newProduct.dateAdded!)
+                : '',
             onPressed: () async {
               var date = await showDatePicker(
                   context: context,
@@ -210,7 +219,8 @@ class _AddProductFormState extends State<AddProductForm> {
             foregroundColor: Colors.grey[300],
             child: Icon(Icons.photo_library),
             onPressed: () async {
-              File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+              XFile? image =
+                  await ImagePicker().pickImage(source: ImageSource.gallery);
               setState(() {
                 _selected = image;
               });
@@ -225,7 +235,9 @@ class _AddProductFormState extends State<AddProductForm> {
     return _selected == null
         ? BoxDecoration(color: Colors.grey[300])
         : BoxDecoration(
-            image: DecorationImage(image: FileImage(_selected), fit: BoxFit.cover),
+            image: DecorationImage(
+                image: FileImage(File(_selected?.path ?? '')),
+                fit: BoxFit.cover),
           );
   }
 
@@ -243,35 +255,37 @@ class _AddProductFormState extends State<AddProductForm> {
     });
   }
 
-  Future<bool> _onWillPop() {
+  Future<bool> _onWillPop() async{
     if (!_formChanged) return Future<bool>.value(true);
-    return showDialog<bool>(
+    var pop = await showDialog<bool>(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-                content:
-                    Text("Are you sure you want to abandon the form? Any changes will be lost."),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text("Cancel"),
-                    onPressed: () => Navigator.of(context).pop(false),
-                    textColor: Colors.black,
-                  ),
-                  FlatButton(
-                    child: Text("Abandon"),
-                    textColor: Colors.red,
-                    onPressed: () => Navigator.pop(context, true),
-                  ),
-                ],
-              ) ??
-              false;
+            content: Text(
+                "Are you sure you want to abandon the form? Any changes will be lost."),
+            actions: <Widget>[
+              TextButton(
+                child: Text("Cancel"),
+                onPressed: () => Navigator.of(context).pop(false),
+                style: TextButton.styleFrom(foregroundColor: Colors.black),
+
+              ),
+              TextButton(
+                child: Text("Abandon"),
+                style: TextButton.styleFrom(foregroundColor: Colors.red),
+                onPressed: () => Navigator.pop(context, true),
+              ),
+            ],
+          );
         });
+    return pop ?? false;
   }
 
   void _submitForm() {
-    _formKey.currentState.save();
-    _bloc.addNewProduct.add(AddProductEvent(_newProduct));
-    _userBloc.addNewProductToUserProductsSink.add(NewUserProductEvent(_newProduct));
+    _formKey.currentState?.save();
+    _bloc?.addNewProduct.add(AddProductEvent(_newProduct));
+    _userBloc?.addNewProductToUserProductsSink
+        .add(NewUserProductEvent(_newProduct));
     Navigator.of(context).pop();
   }
 

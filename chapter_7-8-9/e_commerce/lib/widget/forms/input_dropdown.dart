@@ -7,22 +7,21 @@ import 'package:flutter/material.dart';
 
 class DateInputField extends StatelessWidget {
   const DateInputField(
-      {Key key,
+      {Key? key,
       this.child,
-      this.labelText,
-      this.valueText,
+      required this.labelText,
+      required this.valueText,
       this.valueStyle,
-      this.onPressed,
+      required this.onPressed,
       this.inputDecoration})
-      : assert(labelText != null),
-        super(key: key);
+      : super(key: key);
 
   final String labelText;
   final String valueText;
-  final TextStyle valueStyle;
+  final TextStyle? valueStyle;
   final VoidCallback onPressed;
-  final Widget child;
-  final InputDecoration inputDecoration;
+  final Widget? child;
+  final InputDecoration? inputDecoration;
 
   @override
   Widget build(BuildContext context) {

@@ -17,19 +17,19 @@ class AppMenu extends StatefulWidget {
 }
 
 class AppMenuState extends State<AppMenu> with RouteAware {
-  String _activeRoute;
-  UserBloc _bloc;
+  String? _activeRoute;
+  UserBloc? _bloc;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    routeObserver.subscribe(this, ModalRoute.of(context));
+    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
     _bloc = AppStateContainer.of(context).blocProvider.userBloc;
   }
 
   @override
   void didPush() {
-    _activeRoute = ModalRoute.of(context).settings.name;
+    _activeRoute = ModalRoute.of(context)?.settings.name;
   }
 
   Future _navigate(String route) async {
@@ -45,15 +45,15 @@ class AppMenuState extends State<AppMenu> with RouteAware {
         children: <Widget>[
           StreamBuilder(
             initialData: ECommerceUser(name: "", contact: ""),
-            stream: _bloc.user,
+            stream: _bloc?.user,
             builder: (BuildContext context, AsyncSnapshot<ECommerceUser> s) =>
                 UserAccountsDrawerHeader(
                   currentAccountPicture: CircleAvatar(
                     backgroundImage:
                         AssetImage("assets/images/apple-in-hand.jpg"),
                   ),
-                  accountEmail: Text(s.data.contact),
-                  accountName: Text(s.data.name),
+                  accountEmail: Text(s.data!.contact ?? ""),
+                  accountName: Text(s.data!.name ?? ""),
                   onDetailsPressed: () {
                     Navigator.pushReplacementNamed(
                         context, ECommerceRoutes.userSettingsPage);

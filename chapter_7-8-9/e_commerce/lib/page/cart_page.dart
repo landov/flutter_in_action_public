@@ -22,14 +22,14 @@ class CartPage extends StatelessWidget {
           stream: _bloc.cartItems,
           initialData: <String, int>{},
           builder: (BuildContext context, AsyncSnapshot<Map<String, int>> snapshot) {
-            if (snapshot.data.keys.isEmpty) {
+            if (snapshot.data!.keys.isEmpty) {
               return SliverFillRemaining(child: Text("Your cart is empty"));
             }
             return SliverList(
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
-                  var _product = snapshot.data.keys.toList()[index];
-                  var qty = snapshot.data[_product];
+                  var _product = snapshot.data!.keys.toList()[index];
+                  var qty = snapshot.data![_product];
                   return Container(
                     decoration: BoxDecoration(
                       border: Border(
@@ -48,15 +48,15 @@ class CartPage extends StatelessWidget {
                         ),
                       ),
                       onDismissed: (DismissDirection dir) {
-                        _bloc.removeFromCartSink.add(RemoveFromCartEvent(_product, qty));
-                        Scaffold.of(context).showSnackBar(
+                        _bloc.removeFromCartSink.add(RemoveFromCartEvent(_product, qty ?? 0));
+                        ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             backgroundColor: AppColors.primary,
                             content: Text(
                               "$_product removed from cart.",
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline
+                                  .headlineMedium!
                                   .copyWith(color: AppColors.accentTextColor),
                             ),
                           ),
@@ -65,7 +65,7 @@ class CartPage extends StatelessWidget {
                     ),
                   );
                 },
-                childCount: snapshot.data.keys.toList().length,
+                childCount: snapshot.data!.keys.toList().length,
               ),
             );
           },
@@ -77,7 +77,7 @@ class CartPage extends StatelessWidget {
             child: Center(
               child: Text(
                 "Cart Total: 5.00",
-                style: Theme.of(context).textTheme.headline,
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
             ),
           ),

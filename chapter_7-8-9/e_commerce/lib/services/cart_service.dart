@@ -21,33 +21,33 @@ class CartServiceTemporary implements CartService {
 
   @override
   Future addToCart(Product p, int qty) async {
-    var newTotalCount = store.cart.totalCartItems + qty;
+    var newTotalCount = store.cart.totalCartItems  ?? 0 + qty;
     var newProductTotalCount = _currentCountForProduct(p) + qty;
     store.cart.totalCartItems = newTotalCount;
-    store.cart.items[p.title] = newProductTotalCount;
+    store.cart.items![p.title] = newProductTotalCount;
     store.cart = store.cart; // used to fake reactivity
   }
 
   @override
   Future removeFromCart(String p, int qty) async {
-    var newTotalCount = store.cart.totalCartItems - qty;
+    var newTotalCount = store.cart.totalCartItems ?? 0 - qty;
     store.cart.totalCartItems = newTotalCount;
-    store.cart.items.remove(p);
+    store.cart.items!.remove(p);
     store.cart = store.cart; // used to fake reactivity
   }
 
   @override
   Stream<int> streamCartCount() {
-    return store.cartNotifier.stream.map((snapshot) => store.cart.totalCartItems);
+    return store.cartNotifier.stream.map((snapshot) => store.cart.totalCartItems ?? 0);
   }
 
   @override
   Stream<Map<String, int>> streamCartItems() {
-    return store.cartNotifier.stream.map((dartData) => store.cart.items);
+    return store.cartNotifier.stream.map((dartData) => store.cart.items ?? {});
   }
 
   int _currentCountForProduct(Product p) {
-    if (!store.cart.items.containsKey(p.title)) return 0;
-    return store.cart.items[p.title];
+    if (!store.cart.items!.containsKey(p.title)) return 0;
+    return store.cart.items![p.title] ?? 0;
   }
 }
